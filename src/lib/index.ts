@@ -1,1 +1,1 @@
-export * from "./UseMobileScreen"
+export * from "./UseMobileScreen";

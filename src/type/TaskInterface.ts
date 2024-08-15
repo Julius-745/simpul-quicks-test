@@ -1,6 +1,6 @@
 export interface Task {
-    checked: boolean;
-    title: string;
-    date: Date;
-    description: string;
+  checked: boolean;
+  title: string;
+  date: Date;
+  description: string;
 }

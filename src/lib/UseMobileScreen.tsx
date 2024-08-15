@@ -1,22 +1,22 @@
-"use client";
-import { useState, useEffect } from "react";
-
+import { useEffect, useState } from 'react';
 
 export const UseIsMobileScreen = () => {
-    const [width, setWidth] = useState<number>(window.innerWidth);
+  const [isMobile, setIsMobile] = useState<boolean>(false);
 
-    function handleWindowSizeChange() {
-        setWidth(window.innerWidth);
-    }
+  useEffect(() => {
+    const handleResize = () => {
+      if (typeof window !== 'undefined') {
+        setIsMobile(window.innerWidth < 768);
+      }
+    };
 
-    useEffect(() => {
-        window.addEventListener('resize', handleWindowSizeChange);
-        return () => {
-            window.removeEventListener('resize', handleWindowSizeChange);
-        }
-    }, []);
+    handleResize();
+    window.addEventListener('resize', handleResize);
 
-    const isMobile = width <= 1024;
-    
-    return isMobile;
-}
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  return isMobile;
+};

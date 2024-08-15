@@ -1,9 +1,10 @@
+import React from "react";
 import type { Metadata } from "next";
-import { Inter, Lato } from "next/font/google";
+import { Lato } from "next/font/google";
 import "./globals.css";
-import { Providers } from './providers'
+import { Providers } from "./providers";
 
-const lato = Lato({ subsets: ["latin"] ,style: ["normal"], weight: ["400"]  });
+const lato = Lato({ subsets: ["latin"], style: ["normal"], weight: ["400"] });
 
 export const metadata: Metadata = {
   title: "Simpul Quicks",
@@ -18,9 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Providers>
-        <body className={lato.className}>
-          {children}
-        </body>
+        <body className={lato.className}>{children}</body>
       </Providers>
     </html>
   );
