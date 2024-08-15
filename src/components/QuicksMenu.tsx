@@ -3,6 +3,7 @@ import { MenuIcon, ChatIcon, TaskIcon } from "./icons";
 import { useState } from "react";
 import { Menu } from "@/type";
 import ChatMenu  from "./menu/ChatMenu";
+import TaskMenu from "./menu/TaskMenu";
 
 export const QuicksMenu = () => {
     const [activeMenu, setActiveMenu] = useState<number>(-1)
@@ -51,7 +52,7 @@ export const QuicksMenu = () => {
                     >
                     <TaskIcon width="30" height="30" color={activeMenu === 1 ? "white" : "#F8B76B"} />
                 </Button>,
-            menu: <ChatMenu/>
+            menu: <TaskMenu/>
         },
     ]
 

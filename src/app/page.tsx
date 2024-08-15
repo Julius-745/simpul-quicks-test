@@ -22,7 +22,7 @@ export default function Home() {
       )  
     }
       <GridItem overflow={"auto"} pos={"relative"} display={"flex"} flexDir={"column"} minH={"100vh"} mx={IsMobileScreen ? "10%" : ""}>
-        <Box py={1} px={1}>
+        <Box>
           <InputGroup>
           <InputLeftElement pointerEvents='none'>
             <SeachIcon width={"18"} height={"17"} color="white" />
