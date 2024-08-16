@@ -44,7 +44,7 @@ export default function Home() {
             <InputLeftElement pointerEvents="none">
               <SeachIcon width={"18"} height={"17"} color="white" />
             </InputLeftElement>
-            <Input variant={"filled"} colorScheme={"#4F4F4F"} width={"100%"} />
+            <Input variant={"filled"} bgColor={"gray"} colorScheme={"#4F4F4F"} width={"100%"} />
           </InputGroup>
         </Box>
         <QuicksMenu />

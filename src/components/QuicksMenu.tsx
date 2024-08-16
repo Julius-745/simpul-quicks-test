@@ -103,7 +103,7 @@ export const QuicksMenu = () => {
             }
             opacity={open ? 1 : 0}
           >
-            <Text display={activeMenu !== -1 ? "none" : "inline"}>
+            <Text color={"white"} display={activeMenu !== -1 ? "none" : "inline"}>
               {item.name}
             </Text>
             <Box pos={"relative"} display={"inline-block"}>
