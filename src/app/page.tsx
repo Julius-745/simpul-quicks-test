@@ -20,6 +20,7 @@ export default function Home() {
       templateColumns={IsMobileScreen ? "1fr" : "3fr 8fr"}
       minW={"100vw"}
       minH={"100vh"}
+      bgColor={"black"}
     >
       {IsMobileScreen ? null : (
         <GridItem
