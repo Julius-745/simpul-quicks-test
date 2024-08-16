@@ -37,6 +37,7 @@ const DetailChat = ({ chat, onBack, setActiveMenu }: DetailChatProps) => {
       ],
     };
     setChats(prevState => [...prevState, newMessage]);
+    setInput("")
   };
 
   const handleCloseMenu = () => {
@@ -79,12 +80,16 @@ const DetailChat = ({ chat, onBack, setActiveMenu }: DetailChatProps) => {
       )}
       <Stack maxHeight={mobileScreen ? "41vh" : "50vh"} overflowY={"scroll"}>
         {chats.map((item: MessageInterface, idx: number) => {
+          const today = new Date().toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          });
           const currentDate = item.date.toLocaleDateString("en-US", {
             year: "numeric",
             month: "long",
             day: "numeric",
           });
-
           const showDateDivider = currentDate !== lastDate;
           lastDate = currentDate;
 
@@ -93,12 +98,12 @@ const DetailChat = ({ chat, onBack, setActiveMenu }: DetailChatProps) => {
               {showDateDivider && (
                 <Box position="relative">
                   <Divider
-                    borderColor="gray"
+                    borderColor={today === currentDate ? "red" : "gray"}
                     borderWidth="1px"
                     variant="solid"
                   />
-                  <AbsoluteCenter bg="white" px="4">
-                    {currentDate}
+                  <AbsoluteCenter bg="white" px="4" color={today === currentDate ?  "red" : "gray"}>
+                    {today === currentDate ? "New Message" : currentDate}
                   </AbsoluteCenter>
                 </Box>
               )}
@@ -148,6 +153,7 @@ const DetailChat = ({ chat, onBack, setActiveMenu }: DetailChatProps) => {
           color="black"
           variant="outline"
           borderColor="black"
+          value={input}
           onChange={e => setInput(e.target.value)}
           _placeholder={{ color: "black" }}
           placeholder="Type a new message"
