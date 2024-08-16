@@ -2,8 +2,9 @@ import { Box, Button, HStack, Stack, Text } from "@chakra-ui/react";
 import { MenuIcon, ChatIcon, TaskIcon } from "./icons";
 import { useState } from "react";
 import { Menu } from "@/type";
-import ChatMenu from "./menu/ChatMenu";
-import TaskMenu from "./menu/TaskMenu";
+import TaskMenu from "./menu/TaskList";
+import ChatWrapper from "./menu/chat/ChatWrapper";
+import { DummyChat } from "./constant";
 
 export const QuicksMenu = () => {
   const [activeMenu, setActiveMenu] = useState<number>(-1);
@@ -42,7 +43,7 @@ export const QuicksMenu = () => {
           />
         </Button>
       ),
-      menu: <ChatMenu />,
+      menu: <ChatWrapper setActiveMenu={setActiveMenu} chats={DummyChat} />,
     },
     {
       name: "Task",

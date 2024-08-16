@@ -9,11 +9,11 @@ import {
   InputLeftElement,
 } from "@chakra-ui/react";
 import { SeachIcon } from "@/components/icons";
-import { UseIsMobileScreen } from "@/lib";
+import { MobileScreen } from "@/lib";
 import { QuicksMenu } from "@/components";
 
 export default function Home() {
-  const IsMobileScreen = UseIsMobileScreen();
+  const IsMobileScreen = MobileScreen();
 
   return (
     <Grid
@@ -39,7 +39,7 @@ export default function Home() {
         mx={IsMobileScreen ? "10%" : ""}
       >
         <Box>
-          <InputGroup>
+          <InputGroup bgColor={"#4F4F4F"}>
             <InputLeftElement pointerEvents="none">
               <SeachIcon width={"18"} height={"17"} color="white" />
             </InputLeftElement>

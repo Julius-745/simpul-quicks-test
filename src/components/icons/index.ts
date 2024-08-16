@@ -6,3 +6,5 @@ export * from "./UserIcon";
 export * from "./TimeIcon";
 export * from "./EditIcon";
 export * from "./DateIcon";
+export * from "./ArrowIcon";
+export * from "./CloseIcon";

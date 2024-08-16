@@ -1,1 +1,2 @@
-export * from "./UseMobileScreen";
+export * from "./MobileScreen";
+export * from "./RandomColor";

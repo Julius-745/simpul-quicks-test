@@ -1,9 +1,12 @@
+import { MessageInterface } from "./MessageInterface";
+
 export interface Chat {
   type: string;
   title: string;
   date: Date;
   sender: string;
-  message: string;
+  description: string;
   unread: boolean;
-  chat: [];
+  participant: number;
+  chat: MessageInterface[];
 }

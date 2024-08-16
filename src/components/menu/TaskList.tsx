@@ -1,4 +1,5 @@
-import { UseIsMobileScreen } from "@/lib";
+import React from "react";
+import { MobileScreen } from "@/lib";
 import { SingleDatepicker } from "chakra-dayzed-datepicker";
 import {
   Accordion,
@@ -16,15 +17,22 @@ import {
   MenuItem,
   MenuList,
   Select,
+  Input,
   Text,
 } from "@chakra-ui/react";
 import { DummyTodo } from "../constant";
 import { DateIcon, TimeIcon, EditIcon } from "../icons";
 import { useState } from "react";
+import { Task } from "@/type";
 
-const TaskMenu = () => {
-  const [date, setDate] = useState(new Date());
-  const mobileScreen = UseIsMobileScreen();
+const TaskList = () => {
+  var [items, setItems] = useState<Task[]>(DummyTodo);
+  const [date, setDate] = useState<Date>(new Date());
+  const currentDate = new Date().toLocaleString("en-US", {
+    timeZone: "Asia/Jakarta",
+  });
+  const done: number[] = [];
+  const mobileScreen = MobileScreen();
 
   const getDaysLeft = (date: Date) => {
     const today = new Date();
@@ -32,6 +40,32 @@ const TaskMenu = () => {
     const dif = Math.ceil(timeDif / (1000 * 60 * 60 * 24));
 
     return dif;
+  };
+
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const id = Number(event.target.id);
+    setItems(prevItems =>
+      prevItems.map(item =>
+        item.id === id ? { ...item, checked: !item.checked } : item
+      )
+    );
+  };
+
+  const handleAddItem = () => {
+    const newTodo = {
+      id: items.length + 1,
+      title: "",
+      date: new Date(),
+      description: "",
+      checked: false,
+    };
+    setItems(prevItems => [...prevItems, newTodo]);
+  };
+
+  const handleDeleteItem = (id: number) => {
+    const prevItems = [...items];
+    prevItems.splice(id, 1);
+    setItems(() => prevItems);
   };
 
   return (
@@ -54,6 +88,8 @@ const TaskMenu = () => {
       >
         <Select
           width={mobileScreen ? "50%" : "20%"}
+          ml={"5vh"}
+          _hover={{ borderColor: "black" }}
           color="black"
           borderColor="black"
           placeholder="My Task"
@@ -62,8 +98,10 @@ const TaskMenu = () => {
           <option value="option3">Urgent To-Do</option>
         </Select>
         <Button
+          _hover={{ color: "black" }}
           bgColor="#2F80ED"
           color="white"
+          onClick={() => handleAddItem()}
           size={mobileScreen ? "sm" : "md"}
         >
           New Task
@@ -71,12 +109,13 @@ const TaskMenu = () => {
       </HStack>
       <Accordion
         mt={mobileScreen ? 2 : 4}
+        allowMultiple={true}
         color="black"
         overflowX="hidden"
         overflowY="scroll"
         h="calc(100% - 60px)" // Adjust based on header height
       >
-        {DummyTodo.map((item, idx) => (
+        {items.map((item, idx) => (
           <AccordionItem key={idx}>
             <h2>
               <AccordionButton>
@@ -87,20 +126,44 @@ const TaskMenu = () => {
                   justifyContent="space-between"
                   spacing={mobileScreen ? 2 : 4}
                 >
-                  <Checkbox colorScheme="gray" borderColor="gray" />
-                  <Box
-                    as="span"
-                    textDecor={item.checked ? "line-through" : ""}
-                    flex="1"
-                    textAlign="left"
-                    fontWeight="bold"
-                  >
-                    {item.title}
-                  </Box>
+                  <Checkbox
+                    id={idx.toString()}
+                    isChecked={
+                      item.checked || done.indexOf(idx) !== -1 ? true : false
+                    }
+                    colorScheme="gray"
+                    borderColor="gray"
+                    onChange={handleCheckboxChange}
+                  />
+                  {item.title === "" ? (
+                    <Input
+                      color="black"
+                      variant="outline"
+                      maxW={"60%"}
+                      borderColor="gray"
+                      _placeholder={{ color: "black" }}
+                      placeholder="Type Task Title"
+                    />
+                  ) : (
+                    <Box
+                      textDecor={item.checked ? "line-through" : ""}
+                      flex="1"
+                      textAlign="left"
+                      fontWeight="bold"
+                    >
+                      {item.title}
+                    </Box>
+                  )}
                   <HStack spacing={mobileScreen ? 2 : 4}>
-                    <Text as="span" flex="1" textAlign="left" color="red">
-                      {`${getDaysLeft(item.date)} Days Left`}
-                    </Text>
+                    {date.toLocaleString("en-US", {
+                      timeZone: "Asia/Jakarta",
+                    }) === currentDate ? (
+                      ""
+                    ) : (
+                      <Text flex="1" textAlign="left" color="red">
+                        {`${getDaysLeft(item.date)} Days Left`}
+                      </Text>
+                    )}
                     <Text>
                       {
                         item.date
@@ -111,12 +174,17 @@ const TaskMenu = () => {
                     <AccordionIcon />
                     <Menu>
                       <MenuButton as={Button} size={mobileScreen ? "sm" : "md"}>
-                        <Text color="black" fontWeight="bold">
+                        <Text mb={3} color="black" fontWeight="bold">
                           ...
                         </Text>
                       </MenuButton>
                       <MenuList bgColor="white" color="red">
-                        <MenuItem bgColor="white">Delete</MenuItem>
+                        <MenuItem
+                          bgColor="white"
+                          onClick={() => handleDeleteItem(idx)}
+                        >
+                          Delete
+                        </MenuItem>
                       </MenuList>
                     </Menu>
                   </HStack>
@@ -189,17 +257,28 @@ const TaskMenu = () => {
                     },
                   }}
                   name="date-input"
-                  date={date}
+                  date={date || item.date}
                   onDateChange={setDate}
                 />
               </HStack>
               <HStack gap={5} mt={mobileScreen ? 2 : 4}>
                 <EditIcon
-                  width={mobileScreen ? "32" : "40"}
-                  height={mobileScreen ? "32" : "40"}
+                  width={mobileScreen ? "15" : "18"}
+                  height={mobileScreen ? "15" : "18"}
                   color="#2F80ED"
                 />
-                <Text>{item.description}</Text>
+                {item.description === "" ? (
+                  <Input
+                    color="black"
+                    variant="unstyled"
+                    maxW={"60%"}
+                    borderColor="gray"
+                    _placeholder={{ color: "black" }}
+                    placeholder="No Description"
+                  />
+                ) : (
+                  <Text>{item.description}</Text>
+                )}
               </HStack>
             </AccordionPanel>
             <Divider borderColor="gray" borderWidth="1px" variant="solid" />
@@ -210,4 +289,4 @@ const TaskMenu = () => {
   );
 };
 
-export default TaskMenu;
+export default TaskList;

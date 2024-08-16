@@ -1,16 +1,24 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Suspense } from "react";
 import { CacheProvider } from "@chakra-ui/next-js";
 import { ChakraProvider } from "@chakra-ui/react";
 
 export function Providers({ children }: { children: React.ReactNode }) {
+  const [isClient, setIsClient] = useState(false);
+
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
   return (
-    <CacheProvider>
-      <ChakraProvider>
-        <Suspense>{children}</Suspense>
-      </ChakraProvider>
-    </CacheProvider>
+    isClient && (
+      <CacheProvider>
+        <ChakraProvider>
+          <Suspense>{children}</Suspense>
+        </ChakraProvider>
+      </CacheProvider>
+    )
   );
 }
